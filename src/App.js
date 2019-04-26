@@ -14,6 +14,7 @@ class App extends Component {
     fetch('http://localhost:8000/products').then(res => res.json())
         .catch(err => fetch('db.json').then(res => res.json()).then(data => data.products))
         .then(data => {
+          console.log(data);
           this.setState({products: data});
           this.listProducts();
         });
@@ -22,7 +23,6 @@ class App extends Component {
   handleRemoveFromCart = (e, product) => {
     this.setState(state => {
       const cartItems = state.cartItems.filter(a => a.id !== product.id);
-      // localStorage.setItem('cartItems', JSON.stringify(cartItems));
       return {cartItems: cartItems};
     })
   };
@@ -42,7 +42,6 @@ class App extends Component {
       if (!productAlreadyInCart) {
         cartItems.push({...product, count: 1});
       }
-      // localStorage.setItem('cartItems', JSON.stringify(cartItems));
       return {cartItems: cartItems};
     });
   };
@@ -51,14 +50,14 @@ class App extends Component {
     this.setState(state => {
       if (state.sort !== '') {
         state.products.sort((a, b) =>
-            (state.sort === 'lowestprice'
+            (state.sort === 'lowest'
                 ? ((a.price > b.price) ? 1 : -1)
                 : ((a.price < b.price) ? 1 : -1)));
       } else {
         state.products.sort((a, b) => (a.id > b.id) ? 1 : -1);
       }
       if (state.size !== '') {
-        return {filteredProducts: state.products.filter(a => a.availableSizes.indexOf(state.size.toUpperCase()) >= 0)};
+        return {filteredProducts: state.products.filter(a => a.availableSizes.indexOf(state.size) >= 0)};
       }
       return {filteredProducts: state.products};
     })
