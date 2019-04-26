@@ -3,8 +3,6 @@ import Products from './components/Products';
 import Filter from './components/Filter';
 import Basket from './components/Basket';
 
-import './App.css';
-
 class App extends Component {
   constructor() {
     super();
